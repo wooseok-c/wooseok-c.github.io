@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Woo-Seok Choi</title>
+<meta name="description" content="Neural decoding, brain–machine interfaces, and model compression for spiking neural networks.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#fbfbfa; --panel:#ffffff; --ink:#16161a; --ink-2:#4a4a52; --ink-3:#8a8a93;
+  --line:#e6e6e2; --accent:#1c5d99; --accent-soft:#eef3f8; --ok:#2f7a4f;
+  --warn-bg:#fdf6e8; --warn-ink:#8a6a1f;
+  --radius:10px;
+}
+@media (prefers-color-scheme:dark){
+  :root{
+    --bg:#111113; --panel:#191919; --ink:#ededef; --ink-2:#a9a9b2; --ink-3:#6f6f78;
+    --line:#2a2a2d; --accent:#7fb2e0; --accent-soft:#1a2530; --ok:#6fc292;
+    --warn-bg:#2a2418; --warn-ink:#d8b465;
+  }
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth; scroll-padding-top:80px}
+body{
+  margin:0; background:var(--bg); color:var(--ink);
+  font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+  font-size:16px; line-height:1.65; -webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:760px; margin:0 auto; padding:0 24px}
+a{color:var(--accent); text-decoration:none}
+a:hover{text-decoration:underline}
+code,.mono{font-family:'JetBrains Mono',ui-monospace,SFMono-Regular,Menlo,monospace}
+
+/* ---------- nav ---------- */
+nav{
+  position:sticky; top:0; z-index:20; background:color-mix(in srgb,var(--bg) 88%,transparent);
+  backdrop-filter:blur(10px); border-bottom:1px solid var(--line);
+}
+nav .wrap{display:flex; gap:22px; align-items:center; height:56px; overflow-x:auto; scrollbar-width:none}
+nav .wrap::-webkit-scrollbar{display:none}
+nav a{font-size:13px; color:var(--ink-2); white-space:nowrap; letter-spacing:.02em}
+nav a:hover{color:var(--ink); text-decoration:none}
+nav .brand{font-weight:600; color:var(--ink); margin-right:auto}
+
+/* ---------- header ---------- */
+header{padding:88px 0 64px}
+header h1{font-size:36px; line-height:1.18; letter-spacing:-.02em; margin:0 0 16px; font-weight:600}
+header .lede{font-size:18px; color:var(--ink-2); margin:0 0 26px; max-width:36em}
+.meta{display:flex; flex-wrap:wrap; gap:8px 18px; font-size:13.5px; color:var(--ink-3)}
+.meta span::before{content:"· "; color:var(--line)}
+.meta span:first-child::before{content:""}
+
+/* ---------- sections ---------- */
+section{padding:44px 0; border-top:1px solid var(--line)}
+.sec-head{display:flex; align-items:baseline; gap:14px; margin-bottom:26px}
+.sec-num{font-family:'JetBrains Mono',monospace; font-size:12px; color:var(--ink-3); letter-spacing:.08em}
+.sec-head h2{font-size:15px; margin:0; font-weight:600; letter-spacing:.06em; text-transform:uppercase}
+section p{color:var(--ink-2); margin:0 0 14px}
+section p strong{color:var(--ink); font-weight:500}
+.tagline{font-size:14.5px; color:var(--ink-3); margin:-10px 0 24px}
+
+/* ---------- publications ---------- */
+.pubs{display:flex; flex-direction:column; gap:22px}
+.pub{padding-left:16px; border-left:2px solid var(--line)}
+.pub .t{font-size:15.5px; color:var(--ink); font-weight:500; margin:0 0 5px; line-height:1.5}
+.pub .a{font-size:13.5px; color:var(--ink-2); margin:0 0 6px}
+.pub .a b{color:var(--ink); font-weight:600}
+.pub .v{font-family:'JetBrains Mono',monospace; font-size:12px; color:var(--ink-3)}
+.status{
+  font-family:'JetBrains Mono',monospace; font-size:11px; letter-spacing:.03em;
+  background:var(--warn-bg); color:var(--warn-ink); border-radius:4px; padding:2px 7px;
+  margin-left:7px; white-space:nowrap;
+}
+.subhead{
+  font-family:'JetBrains Mono',monospace; font-size:11.5px; letter-spacing:.08em;
+  text-transform:uppercase; color:var(--ink-3); margin:0 0 14px;
+}
+
+/* ---------- cards ---------- */
+.cards{display:flex; flex-direction:column; gap:14px}
+.card{background:var(--panel); border:1px solid var(--line); border-radius:var(--radius); padding:22px 24px}
+.card-top{display:flex; align-items:baseline; justify-content:space-between; gap:14px; flex-wrap:wrap}
+.card h3{margin:0; font-size:17px; font-weight:600; letter-spacing:-.01em}
+.card .venue{font-family:'JetBrains Mono',monospace; font-size:11.5px; color:var(--ink-3); white-space:nowrap}
+.card .paper{font-size:13.5px; color:var(--ink-3); margin:5px 0 14px; font-style:italic}
+.card ul{margin:0 0 14px; padding-left:18px; color:var(--ink-2); font-size:14.5px}
+.card li{margin:5px 0}
+.card li::marker{color:var(--ink-3)}
+.verify{
+  font-family:'JetBrains Mono',monospace; font-size:12px; color:var(--ok);
+  background:var(--accent-soft); border-radius:6px; padding:8px 11px; display:inline-block;
+  margin-bottom:14px; line-height:1.5;
+}
+.card-links{font-size:13px; display:flex; gap:16px; flex-wrap:wrap}
+
+/* ---------- rows ---------- */
+.rows{display:flex; flex-direction:column; gap:2px}
+.row{display:flex; gap:16px; padding:12px 0; border-bottom:1px solid var(--line); font-size:14.5px; align-items:baseline}
+.row:last-child{border-bottom:none}
+.row .k{flex:0 0 132px; font-family:'JetBrains Mono',monospace; font-size:12px; color:var(--ink-3); padding-top:2px}
+.row .v{flex:1; color:var(--ink-2)}
+.row .v b{color:var(--ink); font-weight:500}
+.row .v .sub{display:block; font-size:13px; color:var(--ink-3); margin-top:2px}
+
+/* ---------- chips ---------- */
+.chips{display:flex; flex-wrap:wrap; gap:7px}
+.chip{
+  font-family:'JetBrains Mono',monospace; font-size:12px; color:var(--ink-2);
+  border:1px solid var(--line); border-radius:999px; padding:4px 11px; background:var(--panel);
+}
+
+footer{padding:44px 0 72px; border-top:1px solid var(--line); font-size:13px; color:var(--ink-3)}
+
+@media (max-width:640px){
+  header{padding:56px 0 44px}
+  header h1{font-size:29px}
+  .row{flex-direction:column; gap:2px}
+  .row .k{flex:none}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="wrap">
+    <a class="brand" href="#top">Woo-Seok Choi</a>
+    <a href="#about">about</a>
+    <a href="#publications">publications</a>
+    <a href="#research">research</a>
+    <a href="#implementations">implementations</a>
+    <a href="#education">education</a>
+    <a href="#contact">contact</a>
+  </div>
+</nav>
+
+<div class="wrap" id="top">
+
+<header>
+  <h1>Decoding movement from spikes — and shrinking the models that do it.</h1>
+  <p class="lede">
+    Undergraduate researcher working on neural decoding and brain–machine interfaces.
+    Currently compressing transformer-based neural foundation models into spiking networks
+    small enough to run on-chip.
+  </p>
+  <div class="meta">
+    <span>Seoul, Republic of Korea</span>
+    <span><a href="mailto:choiws0206@gmail.com">choiws0206@gmail.com</a></span>
+    <span><a href="https://github.com/wooseok-c">GitHub</a></span>
+  </div>
+</header>
+
+<section id="about">
+  <div class="sec-head"><span class="sec-num">01</span><h2>About</h2></div>
+  <p>
+    I'm an undergraduate at <strong>Konkuk University</strong> (B.S. Industrial Engineering,
+    expected 2027.02), currently a research intern in
+    <a href="#research">Prof. Jeong-Woo Sohn's lab</a> at Sungkyunkwan University.
+  </p>
+  <p>
+    My work is on <strong>neural decoding from primate spike recordings</strong>: taking
+    large neural foundation models and asking what actually survives compression, and whether
+    the regional structure such models appear to learn is real or an artifact of how they route
+    information.
+  </p>
+  <p>
+    Alongside the research I rebuild architectures from their papers to understand them
+    properly — that record is in <a href="#implementations">section 04</a>.
+  </p>
+  <div class="chips" style="margin-top:22px">
+    <span class="chip">neural decoding</span>
+    <span class="chip">brain–machine interfaces</span>
+    <span class="chip">neural foundation models</span>
+    <span class="chip">spiking neural networks</span>
+    <span class="chip">model compression</span>
+  </div>
+</section>
+
+<section id="publications">
+  <div class="sec-head"><span class="sec-num">02</span><h2>Publications &amp; abstracts</h2></div>
+
+  <p class="subhead">Publications</p>
+  <div class="pubs" style="margin-bottom:34px">
+    <div class="pub">
+      <p class="t">Compressing POYO to a Spiking Decoder: Representation-Transfer and
+        On-Chip Adaptation Limits</p>
+      <p class="a"><b>W.-S. Choi</b>, M.-K. Kim, S.-H. Kim, J.-W. Sohn</p>
+      <p class="v">IEEE BioCAS 2026 <span class="status">under review</span></p>
+    </div>
+  </div>
+
+  <p class="subhead">Conference abstracts</p>
+  <div class="pubs">
+    <div class="pub">
+      <p class="t">Apparent regional representation in a multi-region transformer decoder is an
+        artifact of cross-region routing, not local encoding</p>
+      <p class="a"><b>W.-S. Choi</b>, M.-K. Kim, S.-H. Kim, J.-W. Sohn</p>
+      <p class="v">Society for Neuroscience (SfN) 2026 <span class="status">submitted</span></p>
+    </div>
+    <div class="pub">
+      <p class="t">Decoding primate motor and executive cortex with neural foundation models</p>
+      <p class="a">J.-W. Sohn, <b>W.-S. Choi</b>, M.-K. Kim, S.-H. Kim</p>
+      <p class="v">Korean Society for Brain and Neural Sciences (KSBNS / K-Brain) 2026</p>
+    </div>
+  </div>
+</section>
+
+<section id="research">
+  <div class="sec-head"><span class="sec-num">03</span><h2>Research</h2></div>
+  <p class="tagline">
+    Research Intern · Sungkyunkwan University · PI: Prof. Jeong-Woo Sohn · 2025.12 – 2026.09<br>
+    Simultaneous primate M1 / DLPFC spike recordings, decoded with neural foundation models (POYO).
+  </p>
+
+  <div class="cards">
+    <article class="card">
+      <div class="card-top">
+        <h3>Compressing a neural foundation model into a spiking decoder</h3>
+        <span class="venue">first author · BioCAS 2026</span>
+      </div>
+      <p class="paper">Where does decoding performance go when a transformer becomes a spiking network?</p>
+      <ul>
+        <li>Compressed an <strong>11.8 M-parameter</strong> transformer decoder into a
+            <strong>49.8 K-parameter</strong> spiking neural network (LSNN) —
+            a <strong>237× reduction</strong></li>
+        <li>Characterized the limits of representation transfer using CKA, FitNet-style hint
+            training, and knowledge distillation</li>
+        <li>Measured on-chip drift adaptation with <strong>e-prop</strong>, mapping where
+            local learning holds up and where it fails</li>
+      </ul>
+      <div class="verify">11.8M → 49.8K parameters · 237× reduction</div>
+    </article>
+
+    <article class="card">
+      <div class="card-top">
+        <h3>Is regional representation in multi-region decoders real?</h3>
+        <span class="venue">first author · SfN 2026</span>
+      </div>
+      <p class="paper">A negative result about how we read structure out of neural decoders.</p>
+      <ul>
+        <li>Causal <strong>region-ablation</strong> experiments paired with readout-level tracing
+            across a multi-region transformer decoder</li>
+        <li>Found that <strong>decodability and attention weights overstate</strong> regional
+            representation — the apparent structure comes from cross-region routing rather than
+            local encoding</li>
+        <li>A caution for the common practice of reading anatomical claims out of decoder
+            attention maps</li>
+      </ul>
+    </article>
+  </div>
+
+  <p style="margin-top:20px; font-size:13.5px; color:var(--ink-3)">
+    Supported by the Alchemist Project, Ministry of Trade, Industry &amp; Energy, Republic of Korea.
+  </p>
+</section>
+
+<section id="implementations">
+  <div class="sec-head"><span class="sec-num">04</span><h2>Implementations from scratch</h2></div>
+  <p class="tagline">
+    Architectures rebuilt in PyTorch from the original papers, module by module, each with a test
+    that checks shapes end to end. ~2,100 lines.
+  </p>
+
+  <div class="cards">
+
+    <article class="card">
+      <div class="card-top">
+        <h3>Swin Transformer (Swin-T)</h3>
+        <span class="venue">ICCV 2021 · best paper</span>
+      </div>
+      <p class="paper">Liu et al., <em>Hierarchical Vision Transformer using Shifted Windows</em></p>
+      <ul>
+        <li>Full Swin-T: patch embedding → 4 stages (2/2/6/2 blocks) → patch merging → classifier</li>
+        <li><strong>Window attention</strong> with a relative position bias table, and the
+            <strong>shifted-window</strong> variant with cyclic shift and its attention mask</li>
+        <li>Kept tensors in grid form <code>(B, H, W, C)</code> rather than the official flattened
+            <code>(B, L, C)</code> — shapes stay readable while following the shift by hand</li>
+      </ul>
+      <div class="verify">28.3M parameters — paper Table 1 reports 29M<br>6/6 component tests pass</div>
+      <div class="card-links">
+        <a href="https://github.com/wooseok-c/architectures/tree/main/swin">code →</a>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="card-top">
+        <h3>Transformer &amp; Vision Transformer</h3>
+        <span class="venue">NeurIPS 2017 · ICLR 2021</span>
+      </div>
+      <p class="paper">Vaswani et al., <em>Attention Is All You Need</em> · Dosovitskiy et al.,
+        <em>An Image is Worth 16×16 Words</em></p>
+      <ul>
+        <li>Scaled dot-product and multi-head attention from the equations, including the causal mask</li>
+        <li>Encoder–decoder stack with sinusoidal positional encoding, residual blocks, FFN</li>
+        <li>ViT at CIFAR scale: patch embedding, <code>[CLS]</code> token, learned position
+            embeddings, classification head</li>
+      </ul>
+      <div class="verify">Encoder/decoder and ViT forward passes verified end to end</div>
+      <div class="card-links">
+        <a href="https://github.com/wooseok-c/architectures/tree/main/transformer">code →</a>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="card-top">
+        <h3>Recurrent models: RNN → GRU/LSTM → Seq2Seq → Attention</h3>
+        <span class="venue">1997–2015</span>
+      </div>
+      <p class="paper">Hochreiter &amp; Schmidhuber · Cho et al. · Sutskever et al. · Bahdanau et al.</p>
+      <ul>
+        <li>RNN cell → sequence layer → encoder–decoder, built in that order so the
+            <strong>context-vector bottleneck</strong> shows up on its own</li>
+        <li>GRU and LSTM gates written out individually rather than called from <code>nn.LSTM</code></li>
+        <li>Additive attention on top, resolving the bottleneck the seq2seq step exposed</li>
+      </ul>
+      <div class="verify">Cell / layer / seq2seq shape tests pass</div>
+      <div class="card-links">
+        <a href="https://github.com/wooseok-c/architectures/tree/main/rnn">code →</a>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="card-top">
+        <h3>ResNet BasicBlock &amp; GoogLeNet Inception</h3>
+        <span class="venue">CVPR 2015 · CVPR 2016</span>
+      </div>
+      <p class="paper">He et al., <em>Deep Residual Learning</em> · Szegedy et al.,
+        <em>Going Deeper with Convolutions</em></p>
+      <ul>
+        <li>Residual block with all three shortcut cases: identity, 1×1 projection for a channel
+            change, strided 1×1 for a resolution change</li>
+        <li>Inception module: four parallel branches concatenated channel-wise, with 1×1
+            bottlenecks — the idea that reappears in ResNet bottlenecks and the Transformer FFN</li>
+        <li>Traced why <em>sum</em> constrains dimensions where <em>concat</em> does not, which
+            is what makes the projection shortcut necessary</li>
+      </ul>
+      <div class="verify">All 3 shortcut cases pass · Inception output torch.Size([2, 256, 28, 28])</div>
+      <div class="card-links">
+        <a href="https://github.com/wooseok-c/architectures/tree/main/resnet">code →</a>
+        <a href="https://github.com/wooseok-c/architectures/tree/main/googlenet">googlenet →</a>
+      </div>
+    </article>
+
+  </div>
+
+  <div class="rows" style="margin-top:26px">
+    <div class="row">
+      <div class="k">coursework</div>
+      <div class="v"><b>Stanford CS231n — Deep Learning for Computer Vision.</b>
+        Worked locally rather than in Colab: k-NN, SVM, softmax, two-layer nets, backpropagation
+        by hand, batch norm, dropout, convolutional networks, RNN and Transformer captioning,
+        self-supervised learning, CLIP/DINO, DDPM.</div>
+    </div>
+  </div>
+</section>
+
+<section id="education">
+  <div class="sec-head"><span class="sec-num">05</span><h2>Education &amp; activities</h2></div>
+  <div class="rows">
+    <div class="row">
+      <div class="k">2024.03 – 2027.02</div>
+      <div class="v"><b>Konkuk University, Seoul</b>
+        <span class="sub">B.S. in Industrial Engineering (expected 2027.02)</span></div>
+    </div>
+    <div class="row">
+      <div class="k">2020.03 – 2024.02</div>
+      <div class="v"><b>Sahmyook University</b>
+        <span class="sub">Management Information Systems</span></div>
+    </div>
+    <div class="row">
+      <div class="k">2025.09 – 2026.08</div>
+      <div class="v"><b>BCSC — Brain &amp; Cognitive Science undergraduate community</b>
+        <span class="sub">Organizing staff, 9th and 10th cohorts</span></div>
+    </div>
+  </div>
+  <div class="chips" style="margin-top:24px">
+    <span class="chip">Python</span>
+    <span class="chip">PyTorch</span>
+    <span class="chip">NumPy</span>
+    <span class="chip">SQL</span>
+    <span class="chip">Git</span>
+  </div>
+</section>
+
+<section id="contact">
+  <div class="sec-head"><span class="sec-num">06</span><h2>Contact</h2></div>
+  <p>
+    Open to conversations about neural decoding, BMI, and efficient models for neural data —
+    and to graduate research opportunities.
+  </p>
+  <div class="rows">
+    <div class="row"><div class="k">email</div>
+      <div class="v"><a href="mailto:choiws0206@gmail.com">choiws0206@gmail.com</a></div></div>
+    <div class="row"><div class="k">github</div>
+      <div class="v"><a href="https://github.com/wooseok-c">github.com/wooseok-c</a></div></div>
+  </div>
+</section>
+
+<footer>
+  Built as a plain static page. Source on
+  <a href="https://github.com/wooseok-c/wooseok-c.github.io">GitHub</a>.
+</footer>
+
+</div>
+</body>
+</html>
