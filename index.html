@@ -96,6 +96,21 @@ section p strong{color:var(--ink); font-weight:500}
 }
 .card-links{font-size:13px; display:flex; gap:16px; flex-wrap:wrap}
 
+/* ---------- study table ---------- */
+.tbl-wrap{overflow-x:auto; margin:0 -4px}
+table.tbl{border-collapse:collapse; width:100%; font-size:14px; min-width:520px}
+table.tbl th{
+  font-family:'JetBrains Mono',monospace; font-size:10.5px; letter-spacing:.09em;
+  text-transform:uppercase; color:var(--ink-3); font-weight:500;
+  text-align:left; padding:0 14px 9px 0; border-bottom:1px solid var(--line); white-space:nowrap;
+}
+table.tbl td{padding:13px 14px 13px 0; border-bottom:1px solid var(--line); vertical-align:top; color:var(--ink-2)}
+table.tbl tr:last-child td{border-bottom:none}
+table.tbl td.arch{color:var(--ink); font-weight:500; white-space:nowrap}
+table.tbl td.arch small{display:block; font-weight:400; color:var(--ink-3); font-size:12px; margin-top:2px; white-space:normal}
+table.tbl td.src{font-size:13px; color:var(--ink-3)}
+table.tbl td.chk{font-family:'JetBrains Mono',monospace; font-size:11.5px; color:var(--ok); white-space:nowrap}
+
 /* ---------- rows ---------- */
 .rows{display:flex; flex-direction:column; gap:2px}
 .row{display:flex; gap:16px; padding:12px 0; border-bottom:1px solid var(--line); font-size:14.5px; align-items:baseline}
@@ -130,7 +145,7 @@ footer{padding:44px 0 72px; border-top:1px solid var(--line); font-size:13px; co
     <a href="#about">about</a>
     <a href="#publications">publications</a>
     <a href="#research">research</a>
-    <a href="#implementations">implementations</a>
+    <a href="#implementations">learning</a>
     <a href="#education">education</a>
     <a href="#contact">contact</a>
   </div>
@@ -142,8 +157,8 @@ footer{padding:44px 0 72px; border-top:1px solid var(--line); font-size:13px; co
   <h1>Decoding movement from spikes — and shrinking the models that do it.</h1>
   <p class="lede">
     Undergraduate researcher working on neural decoding and brain–machine interfaces.
-    Currently compressing transformer-based neural foundation models into spiking networks
-    small enough to run on-chip.
+    Currently compressing large transformer decoders into spiking neural networks —
+    237× smaller — and measuring what that compression costs.
   </p>
   <div class="meta">
     <span>Seoul, Republic of Korea</span>
@@ -257,92 +272,75 @@ footer{padding:44px 0 72px; border-top:1px solid var(--line); font-size:13px; co
 </section>
 
 <section id="implementations">
-  <div class="sec-head"><span class="sec-num">04</span><h2>Implementations from scratch</h2></div>
-  <p class="tagline">
-    Architectures rebuilt in PyTorch from the original papers, module by module, each with a test
-    that checks shapes end to end. ~2,100 lines.
+  <div class="sec-head"><span class="sec-num">04</span><h2>Learning by re-implementation</h2></div>
+  <p>
+    These are <strong>not my own models</strong>. They are well-known published architectures that
+    I rebuilt in PyTorch from the original papers — module by module, without a reference
+    implementation open — as a way of studying them. Each one has a test that checks shapes
+    end to end, so "I understood it" has something falsifiable behind it.
+  </p>
+  <p class="tagline" style="margin-top:18px">
+    Worked through in roughly this order, each architecture answering a problem the previous
+    one left open.
   </p>
 
-  <div class="cards">
+  <div class="card">
+    <div class="tbl-wrap">
+      <table class="tbl">
+        <thead>
+          <tr><th>Architecture</th><th>Paper</th><th>Checked</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="arch">Inception<small>parallel branches, 1×1 bottleneck</small></td>
+            <td class="src">Szegedy et al.<br>GoogLeNet, CVPR 2015</td>
+            <td class="chk">(2,256,28,28)</td>
+          </tr>
+          <tr>
+            <td class="arch">ResNet BasicBlock<small>all 3 shortcut cases</small></td>
+            <td class="src">He et al.<br>CVPR 2016</td>
+            <td class="chk">3/3 cases</td>
+          </tr>
+          <tr>
+            <td class="arch">RNN → GRU / LSTM<small>gates written out, not <code>nn.LSTM</code></small></td>
+            <td class="src">Hochreiter &amp; Schmidhuber · Cho et al.</td>
+            <td class="chk">shape tests</td>
+          </tr>
+          <tr>
+            <td class="arch">Seq2Seq → Attention<small>built so the context bottleneck shows up first</small></td>
+            <td class="src">Sutskever et al. · Bahdanau et al.</td>
+            <td class="chk">shape tests</td>
+          </tr>
+          <tr>
+            <td class="arch">Transformer<small>multi-head attention, causal mask, PE</small></td>
+            <td class="src">Vaswani et al.<br>NeurIPS 2017</td>
+            <td class="chk">forward pass</td>
+          </tr>
+          <tr>
+            <td class="arch">ViT<small>CIFAR scale, <code>[CLS]</code> token</small></td>
+            <td class="src">Dosovitskiy et al.<br>ICLR 2021</td>
+            <td class="chk">forward pass</td>
+          </tr>
+          <tr>
+            <td class="arch">Swin Transformer (Swin-T)<small>full model: windowed + shifted attention, patch merging</small></td>
+            <td class="src">Liu et al.<br>ICCV 2021</td>
+            <td class="chk">28.3M params<br>6/6 components</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
 
-    <article class="card">
-      <div class="card-top">
-        <h3>Swin Transformer (Swin-T)</h3>
-        <span class="venue">ICCV 2021 · best paper</span>
-      </div>
-      <p class="paper">Liu et al., <em>Hierarchical Vision Transformer using Shifted Windows</em></p>
-      <ul>
-        <li>Full Swin-T: patch embedding → 4 stages (2/2/6/2 blocks) → patch merging → classifier</li>
-        <li><strong>Window attention</strong> with a relative position bias table, and the
-            <strong>shifted-window</strong> variant with cyclic shift and its attention mask</li>
-        <li>Kept tensors in grid form <code>(B, H, W, C)</code> rather than the official flattened
-            <code>(B, L, C)</code> — shapes stay readable while following the shift by hand</li>
-      </ul>
-      <div class="verify">28.3M parameters — paper Table 1 reports 29M<br>6/6 component tests pass</div>
-      <div class="card-links">
-        <a href="https://github.com/wooseok-c/architectures/tree/main/swin">code →</a>
-      </div>
-    </article>
-
-    <article class="card">
-      <div class="card-top">
-        <h3>Transformer &amp; Vision Transformer</h3>
-        <span class="venue">NeurIPS 2017 · ICLR 2021</span>
-      </div>
-      <p class="paper">Vaswani et al., <em>Attention Is All You Need</em> · Dosovitskiy et al.,
-        <em>An Image is Worth 16×16 Words</em></p>
-      <ul>
-        <li>Scaled dot-product and multi-head attention from the equations, including the causal mask</li>
-        <li>Encoder–decoder stack with sinusoidal positional encoding, residual blocks, FFN</li>
-        <li>ViT at CIFAR scale: patch embedding, <code>[CLS]</code> token, learned position
-            embeddings, classification head</li>
-      </ul>
-      <div class="verify">Encoder/decoder and ViT forward passes verified end to end</div>
-      <div class="card-links">
-        <a href="https://github.com/wooseok-c/architectures/tree/main/transformer">code →</a>
-      </div>
-    </article>
-
-    <article class="card">
-      <div class="card-top">
-        <h3>Recurrent models: RNN → GRU/LSTM → Seq2Seq → Attention</h3>
-        <span class="venue">1997–2015</span>
-      </div>
-      <p class="paper">Hochreiter &amp; Schmidhuber · Cho et al. · Sutskever et al. · Bahdanau et al.</p>
-      <ul>
-        <li>RNN cell → sequence layer → encoder–decoder, built in that order so the
-            <strong>context-vector bottleneck</strong> shows up on its own</li>
-        <li>GRU and LSTM gates written out individually rather than called from <code>nn.LSTM</code></li>
-        <li>Additive attention on top, resolving the bottleneck the seq2seq step exposed</li>
-      </ul>
-      <div class="verify">Cell / layer / seq2seq shape tests pass</div>
-      <div class="card-links">
-        <a href="https://github.com/wooseok-c/architectures/tree/main/rnn">code →</a>
-      </div>
-    </article>
-
-    <article class="card">
-      <div class="card-top">
-        <h3>ResNet BasicBlock &amp; GoogLeNet Inception</h3>
-        <span class="venue">CVPR 2015 · CVPR 2016</span>
-      </div>
-      <p class="paper">He et al., <em>Deep Residual Learning</em> · Szegedy et al.,
-        <em>Going Deeper with Convolutions</em></p>
-      <ul>
-        <li>Residual block with all three shortcut cases: identity, 1×1 projection for a channel
-            change, strided 1×1 for a resolution change</li>
-        <li>Inception module: four parallel branches concatenated channel-wise, with 1×1
-            bottlenecks — the idea that reappears in ResNet bottlenecks and the Transformer FFN</li>
-        <li>Traced why <em>sum</em> constrains dimensions where <em>concat</em> does not, which
-            is what makes the projection shortcut necessary</li>
-      </ul>
-      <div class="verify">All 3 shortcut cases pass · Inception output torch.Size([2, 256, 28, 28])</div>
-      <div class="card-links">
-        <a href="https://github.com/wooseok-c/architectures/tree/main/resnet">code →</a>
-        <a href="https://github.com/wooseok-c/architectures/tree/main/googlenet">googlenet →</a>
-      </div>
-    </article>
-
+    <p style="font-size:14px; margin:20px 0 0; color:var(--ink-2)">
+      The one I'd point at is <strong>Swin</strong> — the full model, not just a block.
+      It lands at <strong>28.3M parameters against the 29M reported in the paper's Table 1</strong>,
+      which is the closest thing to proof that the shifted-window mechanism was actually understood
+      and not approximated. I kept tensors in grid form <code>(B, H, W, C)</code> instead of the
+      official flattened layout so the shift could be followed by hand.
+    </p>
+    <p class="card-links" style="margin-top:16px">
+      <a href="https://github.com/wooseok-c/architectures">all code on GitHub →</a>
+      <a href="https://github.com/wooseok-c/architectures/blob/main/swin/Swin_%EC%A0%95%EB%A6%AC.md">Swin write-up (Korean) →</a>
+    </p>
   </div>
 
   <div class="rows" style="margin-top:26px">
