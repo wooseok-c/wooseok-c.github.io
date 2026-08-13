@@ -153,11 +153,10 @@ footer{padding:44px 0 72px; border-top:1px solid var(--line); font-size:13px; co
 <div class="wrap" id="top">
 
 <header>
-  <h1>Decoding movement from spikes, and shrinking the models that do it.</h1>
+  <h1>Neural decoding and model compression for brain–machine interfaces.</h1>
   <p class="lede">
-    Undergraduate researcher working on neural decoding and brain–machine interfaces.
-    Currently compressing large transformer decoders into spiking neural networks
-    237× smaller, and measuring what that compression costs.
+    Undergraduate researcher. I decode primate spike recordings with neural foundation
+    models, and study how far those decoders can be compressed before they stop working.
   </p>
   <div class="meta">
     <span>Seoul, Republic of Korea</span>
@@ -170,18 +169,18 @@ footer{padding:44px 0 72px; border-top:1px solid var(--line); font-size:13px; co
   <div class="sec-head"><span class="sec-num">01</span><h2>About</h2></div>
   <p>
     I'm an undergraduate at <strong>Konkuk University</strong> (B.S. Industrial Engineering,
-    expected 2027.02), currently a research intern in
+    expected 2027.02) and a research intern in
     <a href="#research">Prof. Jeong-Woo Sohn's lab</a> at Sungkyunkwan University.
   </p>
   <p>
-    My work is on <strong>neural decoding from primate spike recordings</strong>: taking
-    large neural foundation models and asking what actually survives compression, and whether
-    the regional structure such models appear to learn is real or an artifact of how they route
-    information.
+    My work is on <strong>neural decoding from primate spike recordings</strong>. Two questions
+    so far: how much decoding performance survives when a large transformer decoder is compressed
+    into a spiking network, and whether the regional structure these models appear to learn is
+    real.
   </p>
   <p>
-    Alongside the research I rebuild architectures from their papers to understand them
-    properly — that record is in <a href="#implementations">section 04</a>.
+    I also re-implement architectures from their papers as a way of studying them. That is in
+    <a href="#implementations">section 04</a>.
   </p>
   <div class="chips" style="margin-top:22px">
     <span class="chip">neural decoding</span>
@@ -234,33 +233,31 @@ footer{padding:44px 0 72px; border-top:1px solid var(--line); font-size:13px; co
         <h3>Compressing a neural foundation model into a spiking decoder</h3>
         <span class="venue">first author · BioCAS 2026</span>
       </div>
-      <p class="paper">Where does decoding performance go when a transformer becomes a spiking network?</p>
-      <ul>
+            <ul>
         <li>Compressed an <strong>11.8 M-parameter</strong> transformer decoder into a
-            <strong>49.8 K-parameter</strong> spiking neural network (LSNN) —
-            a <strong>237× reduction</strong></li>
+            <strong>49.8 K-parameter</strong> spiking neural network (LSNN), a
+            <strong>237× reduction</strong></li>
         <li>Characterized the limits of representation transfer using CKA, FitNet-style hint
             training, and knowledge distillation</li>
-        <li>Measured on-chip drift adaptation with <strong>e-prop</strong>, mapping where
-            local learning holds up and where it fails</li>
+        <li>Measured on-chip drift adaptation with <strong>e-prop</strong>, and where it
+            stops working</li>
       </ul>
       <div class="verify">11.8M → 49.8K parameters · 237× reduction</div>
     </article>
 
     <article class="card">
       <div class="card-top">
-        <h3>Is regional representation in multi-region decoders real?</h3>
+        <h3>Regional representation in multi-region decoders</h3>
         <span class="venue">first author · SfN 2026</span>
       </div>
-      <p class="paper">A negative result about how we read structure out of neural decoders.</p>
-      <ul>
+            <ul>
         <li>Causal <strong>region-ablation</strong> experiments paired with readout-level tracing
             across a multi-region transformer decoder</li>
-        <li>Found that <strong>decodability and attention weights overstate</strong> regional
-            representation — the apparent structure comes from cross-region routing rather than
-            local encoding</li>
-        <li>A caution for the common practice of reading anatomical claims out of decoder
-            attention maps</li>
+        <li>Decodability and attention weights <strong>overstate</strong> regional
+            representation. The apparent structure comes from cross-region routing, not local
+            encoding</li>
+        <li>Decoder attention maps are often read as evidence about anatomy. These results
+            say that reading is unreliable</li>
       </ul>
     </article>
   </div>
@@ -273,14 +270,13 @@ footer{padding:44px 0 72px; border-top:1px solid var(--line); font-size:13px; co
 <section id="implementations">
   <div class="sec-head"><span class="sec-num">04</span><h2>Learning by re-implementation</h2></div>
   <p>
-    These are <strong>not my own models</strong>. They are well-known published architectures that
-    I rebuilt in PyTorch from the original papers — module by module, without a reference
-    implementation open — as a way of studying them. Each one has a test that checks shapes
-    end to end, so "I understood it" has something falsifiable behind it.
+    These are <strong>not models I designed</strong>. They are published architectures that I
+    re-implemented in PyTorch from the papers, module by module, without a reference
+    implementation open, as a way of studying them. Each one has a test that checks shapes
+    end to end.
   </p>
   <p class="tagline" style="margin-top:18px">
-    Worked through in roughly this order, each architecture answering a problem the previous
-    one left open.
+    Roughly in the order I worked through them.
   </p>
 
   <div class="card">
@@ -323,11 +319,10 @@ footer{padding:44px 0 72px; border-top:1px solid var(--line); font-size:13px; co
     </div>
 
     <p style="font-size:14px; margin:20px 0 0; color:var(--ink-2)">
-      The one I'd point at is <strong>Swin</strong> — the full model, not just a block.
-      It lands at <strong>28.3M parameters against the 29M reported in the paper's Table 1</strong>,
-      which is the closest thing to proof that the shifted-window mechanism was actually understood
-      and not approximated. I kept tensors in grid form <code>(B, H, W, C)</code> instead of the
-      official flattened layout so the shift could be followed by hand.
+      <strong>Swin</strong> is the only full model here rather than a single block. It comes to
+      <strong>28.3M parameters</strong>; the paper's Table 1 reports 29M. I kept tensors in grid
+      form <code>(B, H, W, C)</code> instead of the official flattened layout, which makes the
+      window shift easier to follow.
     </p>
     <p class="card-links" style="margin-top:16px">
       <a href="https://github.com/wooseok-c/architectures">all code on GitHub →</a>
@@ -338,10 +333,10 @@ footer{padding:44px 0 72px; border-top:1px solid var(--line); font-size:13px; co
   <div class="rows" style="margin-top:26px">
     <div class="row">
       <div class="k">coursework</div>
-      <div class="v"><b>Stanford CS231n — Deep Learning for Computer Vision.</b>
-        Worked locally rather than in Colab: k-NN, SVM, softmax, two-layer nets, backpropagation
-        by hand, batch norm, dropout, convolutional networks, RNN and Transformer captioning,
-        self-supervised learning, CLIP/DINO, DDPM.</div>
+      <div class="v"><b>Stanford CS231n: Deep Learning for Computer Vision.</b>
+        k-NN, SVM, softmax, two-layer nets, backpropagation by hand, batch norm, dropout,
+        convolutional networks, RNN and Transformer captioning, self-supervised learning,
+        CLIP/DINO, DDPM.</div>
     </div>
   </div>
 </section>
@@ -361,7 +356,7 @@ footer{padding:44px 0 72px; border-top:1px solid var(--line); font-size:13px; co
     </div>
     <div class="row">
       <div class="k">2025.09 – 2026.08</div>
-      <div class="v"><b>BCSC — Brain &amp; Cognitive Science undergraduate community</b>
+      <div class="v"><b>BCSC (Brain &amp; Cognitive Science undergraduate community)</b>
         <span class="sub">Organizing staff, 9th and 10th cohorts</span></div>
     </div>
   </div>
@@ -376,8 +371,8 @@ footer{padding:44px 0 72px; border-top:1px solid var(--line); font-size:13px; co
 <section id="contact">
   <div class="sec-head"><span class="sec-num">06</span><h2>Contact</h2></div>
   <p>
-    Open to conversations about neural decoding, BMI, and efficient models for neural data —
-    and to graduate research opportunities.
+    Email me about neural decoding, BMI, efficient models for neural data, or graduate
+    research openings.
   </p>
   <div class="rows">
     <div class="row"><div class="k">email</div>
@@ -388,8 +383,7 @@ footer{padding:44px 0 72px; border-top:1px solid var(--line); font-size:13px; co
 </section>
 
 <footer>
-  Built as a plain static page. Source on
-  <a href="https://github.com/wooseok-c/wooseok-c.github.io">GitHub</a>.
+  Source on <a href="https://github.com/wooseok-c/wooseok-c.github.io">GitHub</a>.
 </footer>
 
 </div>
