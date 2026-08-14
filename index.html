@@ -173,9 +173,9 @@ footer{padding:44px 0 72px; border-top:1px solid var(--line); font-size:13px; co
     <a href="#research">Prof. Jeong-Woo Sohn's lab</a> at Sungkyunkwan University.
   </p>
   <p>
-    Two questions so far: how much decoding performance survives when a large transformer
-    decoder is compressed into a spiking network, and whether the regional structure these
-    models appear to learn is real.
+    Three questions so far: what one cortical area sends to another during reaching and when,
+    how much decoding performance survives when a large transformer decoder is compressed into
+    a spiking network, and whether the regional structure these models appear to learn is real.
   </p>
   <p>
     I also re-implement architectures from their papers. That is in
@@ -227,6 +227,25 @@ footer{padding:44px 0 72px; border-top:1px solid var(--line); font-size:13px; co
   </p>
 
   <div class="cards">
+    <article class="card">
+      <div class="card-top">
+        <h3>What DLPFC sends to M1, and when</h3>
+        <span class="venue">in progress</span>
+      </div>
+      <ul>
+        <li>Simultaneous <strong>DLPFC, M1 and PPC</strong> recordings from two macaques reaching
+            to targets that sometimes jump mid-trial</li>
+        <li>Extract the <strong>DLPFC–M1 communication subspace</strong> with reduced-rank
+            regression, then test what stays decodable from it once kinematics are controlled for</li>
+        <li>Ask whether DLPFC's influence on M1 is fixed or <strong>depends on M1's current
+            state</strong>, and how long error information takes to reach DLPFC</li>
+        <li>Shuffle nulls, control regions, held-out sessions, and synthetic data with a known
+            answer to check the methods can detect what they claim to. The subspace decomposition
+            is correlational, so it does not support a causal claim, and the analysis is written
+            to keep that boundary explicit</li>
+      </ul>
+    </article>
+
     <article class="card">
       <div class="card-top">
         <h3>Compressing a neural foundation model into a spiking decoder</h3>
