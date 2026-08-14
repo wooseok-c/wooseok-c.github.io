@@ -156,7 +156,7 @@ footer{padding:44px 0 72px; border-top:1px solid var(--line); font-size:13px; co
   <h1>Neural decoding and model compression for brain-computer interfaces.</h1>
   <p class="lede">
     Undergraduate researcher. I decode primate spike recordings with neural foundation
-    models, and study how far those decoders can be compressed before they stop working.
+    models, and work on how far those decoders can be compressed.
   </p>
   <div class="meta">
     <span>Seoul, Republic of Korea</span>
@@ -179,7 +179,7 @@ footer{padding:44px 0 72px; border-top:1px solid var(--line); font-size:13px; co
     real.
   </p>
   <p>
-    I also re-implement architectures from their papers as a way of studying them. That is in
+    I also re-implement architectures from their papers. That is in
     <a href="#implementations">section 04</a>.
   </p>
   <div class="chips" style="margin-top:22px">
@@ -239,8 +239,8 @@ footer{padding:44px 0 72px; border-top:1px solid var(--line); font-size:13px; co
             <strong>237× reduction</strong></li>
         <li>Characterized the limits of representation transfer using CKA, FitNet-style hint
             training, and knowledge distillation</li>
-        <li>Measured on-chip drift adaptation with <strong>e-prop</strong>, and where it
-            stops working</li>
+        <li>Measured how well on-chip adaptation with <strong>e-prop</strong> tracks drift,
+            and where it fails</li>
       </ul>
       <div class="verify">11.8M → 49.8K parameters · 237× reduction</div>
     </article>
@@ -256,8 +256,8 @@ footer{padding:44px 0 72px; border-top:1px solid var(--line); font-size:13px; co
         <li>Decodability and attention weights <strong>overstate</strong> regional
             representation. The apparent structure comes from cross-region routing, not local
             encoding</li>
-        <li>Decoder attention maps are often read as evidence about anatomy. These results
-            say that reading is unreliable</li>
+        <li>Decoder attention maps are often read as evidence about anatomy; these results
+            suggest that reading is unreliable</li>
       </ul>
     </article>
   </div>
@@ -270,9 +270,9 @@ footer{padding:44px 0 72px; border-top:1px solid var(--line); font-size:13px; co
 <section id="implementations">
   <div class="sec-head"><span class="sec-num">04</span><h2>Learning by re-implementation</h2></div>
   <p>
-    These are <strong>not models I designed</strong>. They are published architectures that I
-    re-implemented in PyTorch from the papers, module by module, without a reference
-    implementation open, as a way of studying them. Each one has a test that checks shapes
+    Published architectures that I re-implemented in PyTorch from the papers, module by module,
+    without a reference implementation open, as a way of studying them.
+    <strong>None of these are my own designs.</strong> Each one has a test that checks shapes
     end to end.
   </p>
   <p class="tagline" style="margin-top:18px">
