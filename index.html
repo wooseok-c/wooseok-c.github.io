@@ -269,13 +269,14 @@ footer{padding:44px 0 72px; border-top:1px solid var(--line); font-size:13px; co
         <span class="venue">first author · SfN 2026</span>
       </div>
             <ul>
-        <li>Causal <strong>region-ablation</strong> experiments paired with readout-level tracing
-            across a multi-region transformer decoder</li>
-        <li>Decodability and attention weights <strong>overstate</strong> regional
-            representation. The apparent structure comes from cross-region routing, not local
-            encoding</li>
-        <li>Decoder attention maps are often read as evidence about anatomy; these results
-            suggest that reading is unreliable</li>
+        <li>Ablated regions from a multi-region transformer decoder and traced what changed
+            at the readout</li>
+        <li>In this decoder, <strong>decodability and attention weights turned out to be weak
+            evidence</strong> for regional representation: both stayed high in conditions where
+            the region itself contributed little</li>
+        <li>The analysis is correlational and does not settle the mechanism. What it supports is
+            caution when regional structure is read off a decoder, not a claim about where
+            encoding happens</li>
       </ul>
     </article>
   </div>
