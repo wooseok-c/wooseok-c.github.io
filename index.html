@@ -487,16 +487,33 @@ footer{
 </div>
 
 <script>
-  // 화면에 들어올 때 한 번 페이드인. JS 가 안 돌면 클래스가 안 붙으므로 그냥 보인다.
+  // 스크롤 페이드인. 어떤 이유로든 관찰자가 동작하지 않으면 전부 보이게 되돌린다.
   (function () {
     var targets = document.querySelectorAll('section, .card, .pub, .row');
-    if (!('IntersectionObserver' in window)) return;
+    var showAll = function () {
+      for (var i = 0; i < targets.length; i++) targets[i].classList.add('in');
+    };
+    if (!('IntersectionObserver' in window)) { return; }   // 클래스도 안 붙이므로 그냥 보인다
+
+    var fired = false;
     var io = new IntersectionObserver(function (entries) {
       entries.forEach(function (e) {
-        if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
+        if (e.isIntersecting) { fired = true; e.target.classList.add('in'); io.unobserve(e.target); }
       });
-    }, { threshold: 0.12 });
-    targets.forEach(function (el) { el.classList.add('reveal'); io.observe(el); });
+    }, { threshold: 0, rootMargin: '0px 0px -8% 0px' });
+
+    for (var i = 0; i < targets.length; i++) {
+      targets[i].classList.add('reveal');
+      io.observe(targets[i]);
+    }
+
+    // 안전장치: 3초 안에 아무것도 나타나지 않았다면 관찰이 안 되는 환경이므로 전부 표시
+    setTimeout(function () { if (!fired) showAll(); }, 3000);
+    // 안전장치 2: 스크롤이 시작됐는데 여전히 아무것도 안 나타났으면 전부 표시
+    window.addEventListener('scroll', function onScroll() {
+      if (!fired) showAll();
+      window.removeEventListener('scroll', onScroll);
+    }, { passive: true });
   })();
 </script>
 </body>
