@@ -46,8 +46,13 @@ nav a:hover{color:var(--ink); text-decoration:none}
 nav .brand{font-weight:600; color:var(--ink); margin-right:auto}
 
 /* ---------- header ---------- */
-header{padding:88px 0 64px}
-header h1{font-size:36px; line-height:1.18; letter-spacing:-.02em; margin:0 0 16px; font-weight:600}
+header{padding:88px 0 64px; display:flex; gap:34px; align-items:flex-start}
+header .portrait{
+  flex:0 0 190px; width:190px; height:190px; border-radius:14px; object-fit:cover;
+  border:1px solid var(--line); display:block;
+}
+header .intro{flex:1; min-width:0}
+header h1{font-size:32px; line-height:1.18; letter-spacing:-.02em; margin:0 0 16px; font-weight:600}
 header .lede{font-size:18px; color:var(--ink-2); margin:0 0 26px; max-width:36em}
 .meta{display:flex; flex-wrap:wrap; gap:8px 18px; font-size:13.5px; color:var(--ink-3)}
 .meta span::before{content:"· "; color:var(--line)}
@@ -129,7 +134,8 @@ table.tbl td.src{font-size:13px; color:var(--ink-3)}
 footer{padding:44px 0 72px; border-top:1px solid var(--line); font-size:13px; color:var(--ink-3)}
 
 @media (max-width:640px){
-  header{padding:56px 0 44px}
+  header{padding:56px 0 44px; flex-direction:column; gap:24px}
+  header .portrait{flex:none; width:150px; height:150px}
   header h1{font-size:29px}
   .row{flex-direction:column; gap:2px}
   .row .k{flex:none}
@@ -153,6 +159,8 @@ footer{padding:44px 0 72px; border-top:1px solid var(--line); font-size:13px; co
 <div class="wrap" id="top">
 
 <header>
+  <img class="portrait" src="photo.jpg" alt="Woo-Seok Choi" width="190" height="190">
+  <div class="intro">
   <h1>Neural decoding and model compression for brain-computer interfaces.</h1>
   <p class="lede">
     Undergraduate researcher. I decode primate spike recordings with neural foundation
@@ -162,6 +170,7 @@ footer{padding:44px 0 72px; border-top:1px solid var(--line); font-size:13px; co
     <span>Seoul, Republic of Korea</span>
     <span><a href="mailto:choiws0206@gmail.com">choiws0206@gmail.com</a></span>
     <span><a href="https://github.com/wooseok-c">GitHub</a></span>
+  </div>
   </div>
 </header>
 
