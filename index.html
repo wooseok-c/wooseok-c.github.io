@@ -170,6 +170,17 @@ footer{
   font-size:13px; color:var(--ink-3);
 }
 
+/* ---------- scroll reveal ---------- */
+.reveal{
+  opacity:0; transform:translateY(14px);
+  transition:opacity .7s cubic-bezier(.2,.7,.2,1), transform .7s cubic-bezier(.2,.7,.2,1);
+}
+.reveal.in{opacity:1; transform:none}
+@media (prefers-reduced-motion:reduce){
+  *,::before,::after{transition:none !important; animation:none !important}
+  .reveal{opacity:1; transform:none}
+}
+
 @media (max-width:720px){
   header{padding:110px 0 16px; flex-direction:column; align-items:flex-start; gap:26px}
   header .portrait{flex:none; width:150px}
@@ -455,5 +466,19 @@ footer{
 </footer>
 
 </div>
+
+<script>
+  // 화면에 들어올 때 한 번 페이드인. JS 가 안 돌면 클래스가 안 붙으므로 그냥 보인다.
+  (function () {
+    var targets = document.querySelectorAll('section, .card, .pub, .row');
+    if (!('IntersectionObserver' in window)) return;
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
+      });
+    }, { threshold: 0.12 });
+    targets.forEach(function (el) { el.classList.add('reveal'); io.observe(el); });
+  })();
+</script>
 </body>
 </html>
