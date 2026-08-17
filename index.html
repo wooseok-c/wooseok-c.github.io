@@ -7,138 +7,178 @@
 <meta name="description" content="Neural decoding, brain-computer interfaces, and model compression for spiking neural networks.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
 :root{
-  --bg:#fbfbfa; --panel:#ffffff; --ink:#16161a; --ink-2:#4a4a52; --ink-3:#8a8a93;
-  --line:#e6e6e2; --accent:#1c5d99; --accent-soft:#eef3f8; --ok:#2f7a4f;
-  --warn-bg:#fdf6e8; --warn-ink:#8a6a1f;
-  --radius:10px;
+  --bg:#fafafc;
+  --ink:#0f1220;
+  --ink-2:#3a3f52;
+  --ink-3:#767c92;
+  --accent:#3b5bfe;
+  --line:rgba(15,18,30,.10);
+  --line-soft:rgba(15,18,30,.06);
+  --panel:rgba(15,18,30,.035);
+  --ok:#1c7a4d;
+  --warn-bg:rgba(200,140,0,.12);
+  --warn-ink:#8a6512;
+  --display:'Space Grotesk',Inter,sans-serif;
+  --body:'Inter',system-ui,-apple-system,'Helvetica Neue',sans-serif;
+  --mono:'JetBrains Mono','SF Mono',Menlo,monospace;
 }
 @media (prefers-color-scheme:dark){
   :root{
-    --bg:#111113; --panel:#191919; --ink:#ededef; --ink-2:#a9a9b2; --ink-3:#6f6f78;
-    --line:#2a2a2d; --accent:#7fb2e0; --accent-soft:#1a2530; --ok:#6fc292;
-    --warn-bg:#2a2418; --warn-ink:#d8b465;
+    --bg:#0e0f14;
+    --ink:#eef0f6;
+    --ink-2:#a8aec2;
+    --ink-3:#6f7590;
+    --accent:#7b93ff;
+    --line:rgba(238,240,246,.13);
+    --line-soft:rgba(238,240,246,.07);
+    --panel:rgba(238,240,246,.04);
+    --ok:#5fc48c;
+    --warn-bg:rgba(216,180,101,.14);
+    --warn-ink:#d8b465;
   }
 }
 *{box-sizing:border-box}
-html{scroll-behavior:smooth; scroll-padding-top:80px}
+html{scroll-behavior:smooth; scroll-padding-top:96px}
 body{
-  margin:0; background:var(--bg); color:var(--ink);
-  font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
-  font-size:16px; line-height:1.65; -webkit-font-smoothing:antialiased;
+  margin:0; background:var(--bg); color:var(--ink-2);
+  font-family:var(--body); font-size:16px; line-height:1.6;
+  -webkit-font-smoothing:antialiased;
 }
-.wrap{max-width:760px; margin:0 auto; padding:0 24px}
-a{color:var(--accent); text-decoration:none}
-a:hover{text-decoration:underline}
-code,.mono{font-family:'JetBrains Mono',ui-monospace,SFMono-Regular,Menlo,monospace}
+.wrap{max-width:1040px; margin:0 auto; padding:0 28px}
+.narrow{max-width:680px}
+a{color:var(--ink); text-decoration:none; border-bottom:1px solid var(--line)}
+a:hover{border-bottom-color:var(--accent); color:var(--accent)}
+code,.mono{font-family:var(--mono); font-size:.92em}
 
 /* ---------- nav ---------- */
 nav{
-  position:sticky; top:0; z-index:20; background:color-mix(in srgb,var(--bg) 88%,transparent);
-  backdrop-filter:blur(10px); border-bottom:1px solid var(--line);
+  position:fixed; top:0; left:0; right:0; z-index:30; height:62px;
+  background:color-mix(in srgb, var(--bg) 75%, transparent);
+  backdrop-filter:blur(18px) saturate(1.4);
+  -webkit-backdrop-filter:blur(18px) saturate(1.4);
+  border-bottom:1px solid var(--line);
 }
-nav .wrap{display:flex; gap:22px; align-items:center; height:56px; overflow-x:auto; scrollbar-width:none}
+nav .wrap{display:flex; align-items:center; gap:26px; height:100%; overflow-x:auto; scrollbar-width:none}
 nav .wrap::-webkit-scrollbar{display:none}
-nav a{font-size:13px; color:var(--ink-2); white-space:nowrap; letter-spacing:.02em}
-nav a:hover{color:var(--ink); text-decoration:none}
-nav .brand{font-weight:600; color:var(--ink); margin-right:auto}
+nav .brand{
+  font-family:var(--display); font-weight:600; font-size:15px; color:var(--ink);
+  margin-right:auto; white-space:nowrap; border:0;
+}
+nav .brand span{color:var(--ink-3); font-weight:500}
+nav a:not(.brand){font-size:13.5px; color:var(--ink-2); white-space:nowrap; border:0}
+nav a:not(.brand):hover{color:var(--accent)}
 
 /* ---------- header ---------- */
-header{padding:88px 0 64px; display:flex; gap:34px; align-items:flex-start}
+header{padding:150px 0 24px; display:flex; gap:38px; align-items:flex-end}
 header .portrait{
-  flex:0 0 200px; width:200px; height:auto; aspect-ratio:3/4; border-radius:12px;
-  object-fit:cover; border:1px solid var(--line); display:block;
+  flex:0 0 190px; width:190px; aspect-ratio:3/4; height:auto; object-fit:cover;
+  border-radius:16px; border:1px solid var(--line); display:block;
 }
 header .intro{flex:1; min-width:0}
-header h1{font-size:32px; line-height:1.18; letter-spacing:-.02em; margin:0 0 16px; font-weight:600}
-header .lede{font-size:18px; color:var(--ink-2); margin:0 0 26px; max-width:36em}
-.meta{display:flex; flex-wrap:wrap; gap:8px 18px; font-size:13.5px; color:var(--ink-3)}
-.meta span::before{content:"· "; color:var(--line)}
+header h1{
+  font-family:var(--display); font-weight:600; font-size:clamp(38px,6vw,56px);
+  letter-spacing:-.04em; line-height:1.02; margin:0 0 18px; color:var(--ink);
+}
+header .lede{font-size:17.5px; color:var(--ink-2); margin:0 0 22px; max-width:30em}
+.meta{display:flex; flex-wrap:wrap; gap:6px 16px; font-size:13.5px; color:var(--ink-3)}
+.meta span::before{content:"/ "; color:var(--line)}
 .meta span:first-child::before{content:""}
+.meta a{color:var(--ink-2); border-bottom-color:var(--line-soft)}
 
-/* ---------- sections ---------- */
-section{padding:44px 0; border-top:1px solid var(--line)}
-.sec-head{display:flex; align-items:baseline; gap:14px; margin-bottom:26px}
-.sec-num{font-family:'JetBrains Mono',monospace; font-size:12px; color:var(--ink-3); letter-spacing:.08em}
-.sec-head h2{font-size:15px; margin:0; font-weight:600; letter-spacing:.06em; text-transform:uppercase}
-section p{color:var(--ink-2); margin:0 0 14px}
+/* ---------- section head ---------- */
+section{margin:110px 0}
+.sec-head{display:flex; align-items:center; gap:16px; margin-bottom:34px}
+.sec-num{font-family:var(--mono); font-size:12.5px; letter-spacing:.1em; color:var(--accent); flex:none}
+.sec-head h2{
+  font-family:var(--display); font-weight:500; font-size:25px; letter-spacing:-.02em;
+  margin:0; color:var(--ink); flex:none;
+}
+.sec-rule{flex:1; height:1px; background:var(--line)}
+
+section p{margin:0 0 15px}
 section p strong{color:var(--ink); font-weight:500}
-.tagline{font-size:14.5px; color:var(--ink-3); margin:-10px 0 24px}
+.tagline{font-size:14.5px; color:var(--ink-3); margin:0 0 26px}
 
 /* ---------- publications ---------- */
-.pubs{display:flex; flex-direction:column; gap:22px}
-.pub{padding-left:16px; border-left:2px solid var(--line)}
-.pub .t{font-size:15.5px; color:var(--ink); font-weight:500; margin:0 0 5px; line-height:1.5}
+.pubs{display:flex; flex-direction:column; gap:24px}
+.pub{padding-left:18px; border-left:2px solid var(--line)}
+.pub .t{font-family:var(--display); font-size:17px; font-weight:500; color:var(--ink); margin:0 0 6px; line-height:1.4}
 .pub .a{font-size:13.5px; color:var(--ink-2); margin:0 0 6px}
 .pub .a b{color:var(--ink); font-weight:600}
-.pub .v{font-family:'JetBrains Mono',monospace; font-size:12px; color:var(--ink-3)}
+.pub .v{font-family:var(--mono); font-size:12px; color:var(--ink-3)}
 .status{
-  font-family:'JetBrains Mono',monospace; font-size:11px; letter-spacing:.03em;
-  background:var(--warn-bg); color:var(--warn-ink); border-radius:4px; padding:2px 7px;
-  margin-left:7px; white-space:nowrap;
+  font-family:var(--mono); font-size:11px; letter-spacing:.03em;
+  background:var(--warn-bg); color:var(--warn-ink); border-radius:5px; padding:2px 8px;
+  margin-left:8px; white-space:nowrap;
 }
 .subhead{
-  font-family:'JetBrains Mono',monospace; font-size:11.5px; letter-spacing:.08em;
-  text-transform:uppercase; color:var(--ink-3); margin:0 0 14px;
+  font-family:var(--mono); font-size:11.5px; letter-spacing:.1em; text-transform:uppercase;
+  color:var(--ink-3); margin:0 0 16px;
 }
 
 /* ---------- cards ---------- */
-.cards{display:flex; flex-direction:column; gap:14px}
-.card{background:var(--panel); border:1px solid var(--line); border-radius:var(--radius); padding:22px 24px}
+.cards{display:flex; flex-direction:column; gap:16px}
+.card{background:var(--panel); border:1px solid var(--line); border-radius:18px; padding:24px 24px 20px}
 .card-top{display:flex; align-items:baseline; justify-content:space-between; gap:14px; flex-wrap:wrap}
-.card h3{margin:0; font-size:17px; font-weight:600; letter-spacing:-.01em}
-.card .venue{font-family:'JetBrains Mono',monospace; font-size:11.5px; color:var(--ink-3); white-space:nowrap}
-.card .paper{font-size:13.5px; color:var(--ink-3); margin:5px 0 14px; font-style:italic}
-.card ul{margin:0 0 14px; padding-left:18px; color:var(--ink-2); font-size:14.5px}
-.card li{margin:5px 0}
-.card li::marker{color:var(--ink-3)}
+.card h3{font-family:var(--display); margin:0; font-size:19px; font-weight:500; letter-spacing:-.015em; color:var(--ink)}
+.card .venue{font-family:var(--mono); font-size:11.5px; color:var(--ink-3); white-space:nowrap}
+.card ul{margin:14px 0; padding-left:20px; font-size:14.5px}
+.card li{margin:6px 0}
+.card li::marker{color:var(--accent)}
 .verify{
-  font-family:'JetBrains Mono',monospace; font-size:12px; color:var(--ok);
-  background:var(--accent-soft); border-radius:6px; padding:8px 11px; display:inline-block;
-  margin-bottom:14px; line-height:1.5;
+  font-family:var(--mono); font-size:12px; color:var(--ok);
+  background:color-mix(in srgb, var(--ok) 10%, transparent);
+  border-radius:8px; padding:9px 12px; display:inline-block; line-height:1.5;
 }
-.card-links{font-size:13px; display:flex; gap:16px; flex-wrap:wrap}
+.card-links{font-size:13.5px; display:flex; gap:18px; flex-wrap:wrap; margin:16px 0 0}
 
 /* ---------- study table ---------- */
 .tbl-wrap{overflow-x:auto; margin:0 -4px}
 table.tbl{border-collapse:collapse; width:100%; font-size:14px; min-width:400px}
 table.tbl th{
-  font-family:'JetBrains Mono',monospace; font-size:10.5px; letter-spacing:.09em;
-  text-transform:uppercase; color:var(--ink-3); font-weight:500;
-  text-align:left; padding:0 14px 9px 0; border-bottom:1px solid var(--line); white-space:nowrap;
+  font-family:var(--mono); font-size:10.5px; letter-spacing:.1em; text-transform:uppercase;
+  color:var(--ink-3); font-weight:500; text-align:left;
+  padding:0 14px 10px 0; border-bottom:1px solid var(--line); white-space:nowrap;
 }
-table.tbl td{padding:13px 14px 13px 0; border-bottom:1px solid var(--line); vertical-align:top; color:var(--ink-2)}
+table.tbl td{padding:14px 14px 14px 0; border-bottom:1px solid var(--line-soft); vertical-align:top}
 table.tbl tr:last-child td{border-bottom:none}
-table.tbl td.arch{color:var(--ink); font-weight:500; white-space:nowrap}
-table.tbl td.arch small{display:block; font-weight:400; color:var(--ink-3); font-size:12px; margin-top:2px; white-space:normal}
+table.tbl td.arch{font-family:var(--display); color:var(--ink); font-weight:500; white-space:nowrap}
+table.tbl td.arch small{display:block; font-family:var(--body); font-weight:400; color:var(--ink-3); font-size:12.5px; margin-top:3px; white-space:normal}
 table.tbl td.src{font-size:13px; color:var(--ink-3)}
 
 /* ---------- rows ---------- */
-.rows{display:flex; flex-direction:column; gap:2px}
-.row{display:flex; gap:16px; padding:12px 0; border-bottom:1px solid var(--line); font-size:14.5px; align-items:baseline}
+.rows{display:flex; flex-direction:column}
+.row{display:flex; gap:20px; padding:14px 0; border-bottom:1px solid var(--line-soft); font-size:14.5px; align-items:baseline}
 .row:last-child{border-bottom:none}
-.row .k{flex:0 0 132px; font-family:'JetBrains Mono',monospace; font-size:12px; color:var(--ink-3); padding-top:2px}
-.row .v{flex:1; color:var(--ink-2)}
+.row .k{flex:0 0 128px; font-family:var(--mono); font-size:12px; color:var(--ink-3); padding-top:2px}
+.row .v{flex:1}
 .row .v b{color:var(--ink); font-weight:500}
-.row .v .sub{display:block; font-size:13px; color:var(--ink-3); margin-top:2px}
+.row .v .sub{display:block; font-size:13px; color:var(--ink-3); margin-top:3px}
 
 /* ---------- chips ---------- */
-.chips{display:flex; flex-wrap:wrap; gap:7px}
+.chips{display:flex; flex-wrap:wrap; gap:8px}
 .chip{
-  font-family:'JetBrains Mono',monospace; font-size:12px; color:var(--ink-2);
-  border:1px solid var(--line); border-radius:999px; padding:4px 11px; background:var(--panel);
+  font-family:var(--mono); font-size:12px; color:var(--ink-2);
+  border:1px solid var(--line); border-radius:999px; padding:5px 12px; background:var(--panel);
 }
 
-footer{padding:44px 0 72px; border-top:1px solid var(--line); font-size:13px; color:var(--ink-3)}
+footer{
+  margin:110px 0 90px; padding-top:28px; border-top:1px solid var(--line);
+  font-size:13px; color:var(--ink-3);
+}
 
-@media (max-width:640px){
-  header{padding:56px 0 44px; flex-direction:column; gap:24px}
-  header .portrait{flex:none; width:160px}
-  header h1{font-size:29px}
-  .row{flex-direction:column; gap:2px}
+@media (max-width:720px){
+  header{padding:110px 0 16px; flex-direction:column; align-items:flex-start; gap:26px}
+  header .portrait{flex:none; width:150px}
+  section{margin:80px 0}
+  .sec-head{gap:12px; margin-bottom:26px}
+  .sec-head h2{font-size:21px}
+  .row{flex-direction:column; gap:3px}
   .row .k{flex:none}
+  footer{margin:80px 0 70px}
 }
 </style>
 </head>
@@ -146,7 +186,7 @@ footer{padding:44px 0 72px; border-top:1px solid var(--line); font-size:13px; co
 
 <nav>
   <div class="wrap">
-    <a class="brand" href="#top">Woo-Seok Choi</a>
+    <a class="brand" href="#top">Woo-Seok Choi <span>/ researcher</span></a>
     <a href="#about">about</a>
     <a href="#publications">publications</a>
     <a href="#research">research</a>
@@ -161,36 +201,38 @@ footer{padding:44px 0 72px; border-top:1px solid var(--line); font-size:13px; co
 <header>
   <img class="portrait" src="portrait-v2.jpg" alt="Woo-Seok Choi" width="600" height="800">
   <div class="intro">
-  <h1>Neural decoding and model compression for brain-computer interfaces.</h1>
-  <p class="lede">
-    Undergraduate researcher. I decode primate spike recordings with neural foundation
-    models, and work on how far those decoders can be compressed.
-  </p>
-  <div class="meta">
-    <span>Seoul, Republic of Korea</span>
-    <span><a href="mailto:choiws0206@gmail.com">choiws0206@gmail.com</a></span>
-    <span><a href="https://github.com/wooseok-c">GitHub</a></span>
-  </div>
+    <h1>Woo-Seok Choi</h1>
+    <p class="lede">
+      Undergraduate researcher. I decode primate spike recordings with neural foundation
+      models, and work on how far those decoders can be compressed.
+    </p>
+    <div class="meta">
+      <span>Seoul, Republic of Korea</span>
+      <span><a href="mailto:choiws0206@gmail.com">choiws0206@gmail.com</a></span>
+      <span><a href="https://github.com/wooseok-c">GitHub</a></span>
+    </div>
   </div>
 </header>
 
 <section id="about">
-  <div class="sec-head"><span class="sec-num">01</span><h2>About</h2></div>
-  <p>
-    I'm an undergraduate at <strong>Konkuk University</strong> (B.S. Industrial Engineering,
-    expected 2027.02) and a research intern in
-    <a href="#research">Prof. Jeong-Woo Sohn's lab</a> at Sungkyunkwan University.
-  </p>
-  <p>
-    Three questions so far: what one cortical area sends to another during reaching and when,
-    how much decoding performance survives when a large transformer decoder is compressed into
-    a spiking network, and whether the regional structure these models appear to learn is real.
-  </p>
-  <p>
-    I also re-implement architectures from their papers. That is in
-    <a href="#implementations">section 04</a>.
-  </p>
-  <div class="chips" style="margin-top:22px">
+  <div class="sec-head"><span class="sec-num">01</span><h2>About</h2><span class="sec-rule"></span></div>
+  <div class="narrow">
+    <p>
+      I'm an undergraduate at <strong>Konkuk University</strong> (B.S. Industrial Engineering,
+      expected 2027.02) and a research intern in
+      <a href="#research">Prof. Jeong-Woo Sohn's lab</a> at Sungkyunkwan University.
+    </p>
+    <p>
+      Three questions so far: what one cortical area sends to another during reaching and when,
+      how much decoding performance survives when a large transformer decoder is compressed into
+      a spiking network, and whether the regional structure these models appear to learn is real.
+    </p>
+    <p>
+      I also re-implement architectures from their papers. That is in
+      <a href="#implementations">section 04</a>.
+    </p>
+  </div>
+  <div class="chips" style="margin-top:24px">
     <span class="chip">neural decoding</span>
     <span class="chip">brain-computer interfaces</span>
     <span class="chip">neural foundation models</span>
@@ -199,10 +241,10 @@ footer{padding:44px 0 72px; border-top:1px solid var(--line); font-size:13px; co
 </section>
 
 <section id="publications">
-  <div class="sec-head"><span class="sec-num">02</span><h2>Publications &amp; abstracts</h2></div>
+  <div class="sec-head"><span class="sec-num">02</span><h2>Publications &amp; abstracts</h2><span class="sec-rule"></span></div>
 
   <p class="subhead">Publications</p>
-  <div class="pubs" style="margin-bottom:34px">
+  <div class="pubs" style="margin-bottom:38px">
     <div class="pub">
       <p class="t">Compressing POYO to a Spiking Decoder: Representation-Transfer and
         On-Chip Adaptation Limits</p>
@@ -228,7 +270,7 @@ footer{padding:44px 0 72px; border-top:1px solid var(--line); font-size:13px; co
 </section>
 
 <section id="research">
-  <div class="sec-head"><span class="sec-num">03</span><h2>Research</h2></div>
+  <div class="sec-head"><span class="sec-num">03</span><h2>Research</h2><span class="sec-rule"></span></div>
   <p class="tagline">
     Research Intern · Sungkyunkwan University · PI: Prof. Jeong-Woo Sohn · 2025.12 – present<br>
     Simultaneous primate M1 / DLPFC spike recordings, decoded with POYO.
@@ -259,7 +301,7 @@ footer{padding:44px 0 72px; border-top:1px solid var(--line); font-size:13px; co
         <h3>Compressing a neural foundation model into a spiking decoder</h3>
         <span class="venue">first author · BioCAS 2026</span>
       </div>
-            <ul>
+      <ul>
         <li>Compressed an <strong>11.8 M-parameter</strong> transformer decoder into a
             <strong>49.8 K-parameter</strong> spiking neural network (LSNN), a
             <strong>237× reduction</strong></li>
@@ -276,7 +318,7 @@ footer{padding:44px 0 72px; border-top:1px solid var(--line); font-size:13px; co
         <h3>Regional representation in multi-region decoders</h3>
         <span class="venue">first author · SfN 2026</span>
       </div>
-            <ul>
+      <ul>
         <li>Ablated regions from a multi-region transformer decoder and traced what changed
             at the readout</li>
         <li>In this decoder, <strong>decodability and attention weights turned out to be weak
@@ -289,22 +331,22 @@ footer{padding:44px 0 72px; border-top:1px solid var(--line); font-size:13px; co
     </article>
   </div>
 
-  <p style="margin-top:20px; font-size:13.5px; color:var(--ink-3)">
+  <p class="tagline" style="margin:22px 0 0">
     Supported by the Alchemist Project, Ministry of Trade, Industry &amp; Energy, Republic of Korea.
   </p>
 </section>
 
 <section id="implementations">
-  <div class="sec-head"><span class="sec-num">04</span><h2>Learning by re-implementation</h2></div>
-  <p>
-    Published architectures that I re-implemented in PyTorch from the papers, module by module,
-    without a reference implementation open, as a way of studying them.
-    <strong>None of these are my own designs.</strong> Each one has a test that checks shapes
-    end to end.
-  </p>
-  <p class="tagline" style="margin-top:18px">
-    Roughly in the order I worked through them.
-  </p>
+  <div class="sec-head"><span class="sec-num">04</span><h2>Learning by re-implementation</h2><span class="sec-rule"></span></div>
+  <div class="narrow">
+    <p>
+      Published architectures that I re-implemented in PyTorch from the papers, module by module,
+      without a reference implementation open, as a way of studying them.
+      <strong>None of these are my own designs.</strong> Each one has a test that checks shapes
+      end to end.
+    </p>
+  </div>
+  <p class="tagline" style="margin-top:22px">Roughly in the order I worked through them.</p>
 
   <div class="card">
     <div class="tbl-wrap">
@@ -345,31 +387,31 @@ footer{padding:44px 0 72px; border-top:1px solid var(--line); font-size:13px; co
       </table>
     </div>
 
-    <p style="font-size:14px; margin:20px 0 0; color:var(--ink-2)">
+    <p style="font-size:14.5px; margin:22px 0 0">
       <strong>Swin</strong> is the only full model here rather than a single block. It comes to
       <strong>28.3M parameters</strong>; the paper's Table 1 reports 29M. I kept tensors in grid
       form <code>(B, H, W, C)</code> instead of the official flattened layout, which makes the
       window shift easier to follow.
     </p>
-    <p class="card-links" style="margin-top:16px">
+    <p class="card-links">
       <a href="https://github.com/wooseok-c/architectures">all code on GitHub →</a>
     </p>
   </div>
 
-  <div class="rows" style="margin-top:26px">
+  <div class="rows" style="margin-top:30px">
     <div class="row">
       <div class="k">coursework</div>
       <div class="v"><b>Stanford CS231n: Deep Learning for Computer Vision.</b>
         Course assignments, separate from the implementations above and worked from the
-        provided scaffolding: k-NN, SVM, softmax, two-layer nets, backpropagation by hand, batch norm, dropout,
-        convolutional networks, RNN and Transformer captioning, self-supervised learning,
-        CLIP/DINO, DDPM.</div>
+        provided scaffolding: k-NN, SVM, softmax, two-layer nets, backpropagation by hand,
+        batch norm, dropout, convolutional networks, RNN and Transformer captioning,
+        self-supervised learning, CLIP/DINO, DDPM.</div>
     </div>
   </div>
 </section>
 
 <section id="education">
-  <div class="sec-head"><span class="sec-num">05</span><h2>Education &amp; activities</h2></div>
+  <div class="sec-head"><span class="sec-num">05</span><h2>Education &amp; activities</h2><span class="sec-rule"></span></div>
   <div class="rows">
     <div class="row">
       <div class="k">2024.03 – 2027.02</div>
@@ -387,7 +429,7 @@ footer{padding:44px 0 72px; border-top:1px solid var(--line); font-size:13px; co
         <span class="sub">Organizing staff, 9th and 10th cohorts</span></div>
     </div>
   </div>
-  <div class="chips" style="margin-top:24px">
+  <div class="chips" style="margin-top:26px">
     <span class="chip">Python</span>
     <span class="chip">PyTorch</span>
     <span class="chip">NumPy</span>
@@ -396,11 +438,11 @@ footer{padding:44px 0 72px; border-top:1px solid var(--line); font-size:13px; co
 </section>
 
 <section id="contact">
-  <div class="sec-head"><span class="sec-num">06</span><h2>Contact</h2></div>
-  <p>
-    Email me about neural decoding, BCI, or efficient models for neural data.
-  </p>
-  <div class="rows">
+  <div class="sec-head"><span class="sec-num">06</span><h2>Contact</h2><span class="sec-rule"></span></div>
+  <div class="narrow">
+    <p>Email me about neural decoding, BCI, or efficient models for neural data.</p>
+  </div>
+  <div class="rows" style="margin-top:8px">
     <div class="row"><div class="k">email</div>
       <div class="v"><a href="mailto:choiws0206@gmail.com">choiws0206@gmail.com</a></div></div>
     <div class="row"><div class="k">github</div>
