@@ -487,31 +487,40 @@ footer{
 </div>
 
 <script>
-  // 스크롤 페이드인. 어떤 이유로든 관찰자가 동작하지 않으면 전부 보이게 되돌린다.
+  // 스크롤 페이드인.
+  // 첫 화면에 이미 보이는 요소는 건드리지 않는다. 애니메이션이 어떤 이유로 실패해도
+  // 페이지 상단은 항상 읽을 수 있어야 하므로.
   (function () {
-    var targets = document.querySelectorAll('section, .card, .pub, .row');
-    var showAll = function () {
-      for (var i = 0; i < targets.length; i++) targets[i].classList.add('in');
-    };
-    if (!('IntersectionObserver' in window)) { return; }   // 클래스도 안 붙이므로 그냥 보인다
+    if (!('IntersectionObserver' in window)) return;
+
+    var all = document.querySelectorAll('section, .card, .pub, .row');
+    var targets = [];
+    for (var i = 0; i < all.length; i++) {
+      // 최초 화면 아래에 있는 것만 대상
+      if (all[i].getBoundingClientRect().top > window.innerHeight) targets.push(all[i]);
+    }
+    if (!targets.length) return;
 
     var fired = false;
+    var showAll = function () {
+      for (var j = 0; j < targets.length; j++) targets[j].classList.add('in');
+    };
+
     var io = new IntersectionObserver(function (entries) {
       entries.forEach(function (e) {
         if (e.isIntersecting) { fired = true; e.target.classList.add('in'); io.unobserve(e.target); }
       });
     }, { threshold: 0, rootMargin: '0px 0px -8% 0px' });
 
-    for (var i = 0; i < targets.length; i++) {
-      targets[i].classList.add('reveal');
-      io.observe(targets[i]);
+    for (var k = 0; k < targets.length; k++) {
+      targets[k].classList.add('reveal');
+      io.observe(targets[k]);
     }
 
-    // 안전장치: 3초 안에 아무것도 나타나지 않았다면 관찰이 안 되는 환경이므로 전부 표시
-    setTimeout(function () { if (!fired) showAll(); }, 3000);
-    // 안전장치 2: 스크롤이 시작됐는데 여전히 아무것도 안 나타났으면 전부 표시
+    // 안전장치: 관찰자가 끝내 동작하지 않으면 전부 표시
+    setTimeout(function () { if (!fired) showAll(); }, 2500);
     window.addEventListener('scroll', function onScroll() {
-      if (!fired) showAll();
+      setTimeout(function () { if (!fired) showAll(); }, 400);
       window.removeEventListener('scroll', onScroll);
     }, { passive: true });
   })();
